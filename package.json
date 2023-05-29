@@ -5,9 +5,8 @@
   "author": "Daniel Rodrigues",
   "scripts": {
     "test": "jest",
-    "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx",
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "clean": "rm -rf dist build"
+    "lint": "tsc",
+    "build": "tsup src/index.ts --format cjs,esm --dts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

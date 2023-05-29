@@ -18,6 +18,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
+    "noEmit": true,
     "outDir": "./dist/tsc/",
     "types": ["node", "jest"],
     "lib": ["ES6", "DOM"]
