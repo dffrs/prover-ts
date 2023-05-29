@@ -4,10 +4,10 @@ import ProverNumber from "../../../src/prover/number";
 describe("ProverString tests", () => {
   const p = new ProverNumber();
   it("Proper Initialize", () => {
-    expect(() => p.positive().parse()).toThrow(Error);
+    expect(p).toBeInstanceOf(ProverNumber);
   });
   it("Expecting throw if no argument is provided", () => {
-    expect(p).toBeInstanceOf(ProverNumber);
+    expect(() => p.positive().parse()).toThrow(Error);
   });
   it("Calling positive", () => {
     const testValue = 1;
