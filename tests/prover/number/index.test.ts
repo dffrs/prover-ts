@@ -60,4 +60,25 @@ describe("ProverNumber tests", () => {
     const testValue = 5;
     expect(() => instance.equal(testValue).parse(testValue + 1)).toThrow(Error);
   });
+  it("Calling func", () => {
+    const testValue = 2;
+    const func = jest.fn((arg) => arg === testValue);
+    const result = instance?.func(func).parse(testValue);
+    expect(func).toBeCalledTimes(1);
+    expect(result).toBe(testValue);
+  });
+  it("Calling func with incorrect func type", () => {
+    const testValue = 2;
+    const func = jest.fn((arg) => arg?.concat(""));
+    // It is supposed to throw, so no calling allow
+    expect(func).toBeCalledTimes(0);
+    expect(() => instance?.func(func).parse(testValue)).toThrow(Error);
+  });
+  it("Calling func with null", () => {
+    const testValue = 2;
+    const func = jest.fn(null);
+    // It is supposed to throw, so no calling allow
+    expect(func).toBeCalledTimes(0);
+    expect(() => instance?.func(func).parse(testValue)).toThrow(Error);
+  });
 });
