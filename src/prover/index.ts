@@ -14,16 +14,15 @@ abstract class AProver<T> {
 
   parse(arg: unknown) {
     this.validation(arg);
-    let result = arg;
+    this.value = arg;
     this.operations.forEach((func) => {
       try {
-        result = func(result);
+        this.value = func(this.value);
       } catch (error) {
         throw Error();
       }
     });
     this.operations.clear();
-    this.value = result;
     return this.value;
   }
 }
