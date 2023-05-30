@@ -66,6 +66,10 @@ describe("ProverNumber tests", () => {
     const result = instance?.gt(testValue).parse(temp);
     expect(result).toBe(temp);
   });
+  it("Expecting gt to throw", () => {
+    const testValue = 3;
+    expect(() => instance?.gt(testValue).parse(testValue)).toThrow(Error);
+  });
   it("Calling func", () => {
     const testValue = 2;
     const func = jest.fn((arg) => arg === testValue);
