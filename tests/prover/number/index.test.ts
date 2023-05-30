@@ -42,4 +42,13 @@ describe("ProverString tests", () => {
     const testValue = Infinity;
     expect(() => instance.save().parse(testValue)).toThrow(Error);
   });
+  it("Calling finite", () => {
+    const testValue = 1;
+    const negetiveNumber = instance.finite().parse(testValue);
+    expect(negetiveNumber).toBe(testValue);
+  });
+  it("Expecting finite to throw", () => {
+    const testValue = Infinity;
+    expect(() => instance.finite().parse(testValue)).toThrow(Error);
+  });
 });
