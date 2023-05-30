@@ -60,6 +60,12 @@ describe("ProverNumber tests", () => {
     const testValue = 5;
     expect(() => instance.equal(testValue).parse(testValue + 1)).toThrow(Error);
   });
+  it("Calling gt", () => {
+    const testValue = 3;
+    const temp = 9;
+    const result = instance?.gt(testValue).parse(temp);
+    expect(result).toBe(temp);
+  });
   it("Calling func", () => {
     const testValue = 2;
     const func = jest.fn((arg) => arg === testValue);
