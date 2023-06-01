@@ -54,6 +54,43 @@ class Prover {
       });
     }
 
+    // Implementation to throw error if there's a key that was not expected to be there in the first place.
+    // function isValidObject(arg: unknown): asserts arg is { [Key in keyof O]: ReturnType<O[Key]["parse"]> } {
+    //   if (arg == null || Array.isArray(arg) || typeof arg !== "object") throw Error();
+
+    //   const extraKeys = Object.keys(arg).filter(key => !isValidKey(key, obj));
+    //   if (extraKeys.length > 0) {
+    //     throw Error(`Unexpected properties found: ${extraKeys.join(', ')}`);
+    //   }
+
+    //   Object.keys(obj).forEach((objKey) => {
+    //     if (isNonEmptyObject(arg) && isValidKey(objKey, arg)) {
+    //       obj[objKey].parse(arg[objKey]);
+    //     } else {
+    //       throw Error();
+    //     }
+    //   });
+    // }
+
+    // Implementation to "parse" those unexpected keys.
+    // function isValidObject(arg: unknown): asserts arg is { [Key in keyof O]: ReturnType<O[Key]['parse']> } {
+    //   if (arg == null || Array.isArray(arg) || typeof arg !== 'object') throw Error();
+
+    //   const parsedObject: { [Key in keyof O]?: ReturnType<O[Key]['parse']> } = {};
+
+    //   Object.keys(obj).forEach((objKey) => {
+    //     if (isNonEmptyObject(arg) && isValidKey(objKey, arg)) {
+    //       try {
+    //         parsedObject[objKey] = obj[objKey].parse(arg[objKey]);
+    //       } catch (error) {
+    //         // Ignore the error and skip the property
+    //       }
+    //     }
+    //   });
+
+    //   return parsedObject as { [Key in keyof O]: ReturnType<O[Key]['parse']> };
+    // }
+
     return {
       parse(arg: unknown) {
         isValidObject(arg);
@@ -79,7 +116,7 @@ class Prover {
     };
   }
 
-  public tupple<T, Tupp extends ReadonlyArray<Parse<T>>>(tupple: Tupp) {
+  public tuple<T, Tupp extends ReadonlyArray<Parse<T>>>(tupple: Tupp) {
     function isValidTupple(arg: unknown): asserts arg is ReadonlyArray<ReturnType<Tupp[number]["parse"]>> {
       if (arg == null || !Array.isArray(arg)) throw Error();
 
@@ -114,6 +151,4 @@ class Prover {
   }
 }
 
-const prover = new Prover();
-
-export { prover };
+export default Prover;
