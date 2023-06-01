@@ -69,19 +69,18 @@ describe("Prover", () => {
   });
 
   describe("record()", () => {
-    test("should return the same record when parsed", () => {
+    it("should return the same record when parsed", () => {
       const input = { 1: "John", 2: "Doe" };
       const result = prover.record(prover.string()).parse(input);
       expect(result).toBe(input);
     });
-
-    test("should throw an error when parsing a record with invalid values", () => {
+    it("should throw an error when parsing a record with invalid values", () => {
       const input = { 1: "John", 2: 30 };
       expect(() => {
         prover.record(prover.string()).parse(input);
       }).toThrow();
     });
-    test("should throw an error when parsing a record with missing required keys", () => {
+    it("should throw an error when parsing a record with missing required keys", () => {
       const input = { name: "John" };
       expect(() => {
         prover.record(prover.object({ name: prover.string(), age: prover.number() })).parse(input);
