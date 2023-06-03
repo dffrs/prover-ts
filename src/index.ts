@@ -1,7 +1,7 @@
+import { Parse } from "../util/type";
 import ProverNumber from "./prover/number";
+import ProverObject from "./prover/object";
 import ProverString from "./prover/string";
-type ParseMethod<T> = (arg: unknown) => T;
-type Parse<T> = Record<"parse", ParseMethod<T>>;
 class Prover {
   private isBoolean(args: unknown): asserts args is boolean {
     if (typeof args !== "boolean") throw Error();
@@ -40,63 +40,7 @@ class Prover {
   }
 
   public object<T, O extends Record<PropertyKey, Parse<T>>>(obj: O) {
-    function isNonEmptyObject(obj: object): obj is Record<PropertyKey, unknown> {
-      return Object.keys(obj).length > 0;
-    }
-    function isValidKey<K extends PropertyKey, O extends Record<PropertyKey, unknown>>(key: K, obj: O): key is K {
-      return key in obj;
-    }
-    function isValidObject(arg: unknown): asserts arg is { [Key in keyof O]: ReturnType<O[Key]["parse"]> } {
-      if (arg == null || Array.isArray(arg) || typeof arg !== "object") throw Error();
-      Object.keys(obj).forEach((objKey) => {
-        if (isNonEmptyObject(arg) && isValidKey(objKey, arg)) obj[objKey].parse(arg[objKey]);
-        else throw Error();
-      });
-    }
-
-    // Implementation to throw error if there's a key that was not expected to be there in the first place.
-    // function isValidObject(arg: unknown): asserts arg is { [Key in keyof O]: ReturnType<O[Key]["parse"]> } {
-    //   if (arg == null || Array.isArray(arg) || typeof arg !== "object") throw Error();
-
-    //   const extraKeys = Object.keys(arg).filter(key => !isValidKey(key, obj));
-    //   if (extraKeys.length > 0) {
-    //     throw Error(`Unexpected properties found: ${extraKeys.join(', ')}`);
-    //   }
-
-    //   Object.keys(obj).forEach((objKey) => {
-    //     if (isNonEmptyObject(arg) && isValidKey(objKey, arg)) {
-    //       obj[objKey].parse(arg[objKey]);
-    //     } else {
-    //       throw Error();
-    //     }
-    //   });
-    // }
-
-    // Implementation to "parse" those unexpected keys.
-    // function isValidObject(arg: unknown): asserts arg is { [Key in keyof O]: ReturnType<O[Key]['parse']> } {
-    //   if (arg == null || Array.isArray(arg) || typeof arg !== 'object') throw Error();
-
-    //   const parsedObject: { [Key in keyof O]?: ReturnType<O[Key]['parse']> } = {};
-
-    //   Object.keys(obj).forEach((objKey) => {
-    //     if (isNonEmptyObject(arg) && isValidKey(objKey, arg)) {
-    //       try {
-    //         parsedObject[objKey] = obj[objKey].parse(arg[objKey]);
-    //       } catch (error) {
-    //         // Ignore the error and skip the property
-    //       }
-    //     }
-    //   });
-
-    //   return parsedObject as { [Key in keyof O]: ReturnType<O[Key]['parse']> };
-    // }
-
-    return {
-      parse(arg: unknown) {
-        isValidObject(arg);
-        return arg;
-      },
-    };
+    return new ProverObject(obj);
   }
 
   public record<K extends PropertyKey, T>(values: Parse<T>): Parse<Record<K, T>> {
