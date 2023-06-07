@@ -1,11 +1,9 @@
 import AProver from "..";
 import { Parse } from "../../../util/type";
 class ProverObject<T, O extends Record<PropertyKey, Parse<T>>> extends AProver<O> {
-  private initialValue: O;
   constructor(obj: O) {
     if (obj === undefined) throw Error();
     super(obj);
-    this.initialValue = obj;
   }
   private isNonEmptyObject(obj: object): obj is Record<PropertyKey, unknown> {
     return Object.keys(obj).length > 0;
@@ -15,7 +13,7 @@ class ProverObject<T, O extends Record<PropertyKey, Parse<T>>> extends AProver<O
   }
   protected validation(arg: unknown): asserts arg is { [Key in keyof O]: ReturnType<O[Key]["parse"]> } {
     if (arg == null || Array.isArray(arg) || typeof arg !== "object") throw Error();
-    Object.keys(this.initialValue).forEach((objKey) => {
+    Object.keys(this.value).forEach((objKey) => {
       if (this.isNonEmptyObject(arg) && this.isValidKey(objKey, arg)) this.value[objKey].parse(arg[objKey]);
       else throw Error();
     });
